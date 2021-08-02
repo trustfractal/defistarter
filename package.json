@@ -1,7 +1,7 @@
 {
   "name": "defistarter",
   "private": true,
-  "description": "",
+  "description": "Using Decentralized Finance empower your ideias",
   "version": "0.1.0",
   "author": "Diogo Couto <diogo.couto@invisiblelab.dev>",
   "dependencies": {
