@@ -5,6 +5,7 @@ import styled from "styled-components"
 import Head from "../Head"
 
 import GlobalStyle from "./styles/GlobalStyle"
+import GlobalFonts from "./fonts/GlobalFonts"
 
 const LayoutContainer = styled.div`
   max-width: 100%;
@@ -26,6 +27,7 @@ export default function Layout(props) {
   return (
     <>
       <GlobalStyle />
+      <GlobalFonts />
       <Head />
       <LayoutContainer className="Layout">
         <LayoutContent className="Layout-content">{children}</LayoutContent>

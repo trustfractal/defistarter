@@ -1,6 +1,6 @@
-import { css, createGlobalStyle } from "styled-components"
+import { css } from "styled-components"
 
-export const normalize = css`
+export const NormalizeStyle = css`
   /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
   /* Document
@@ -354,4 +354,4 @@ export const normalize = css`
   }
 `
 
-export const Normalize = createGlobalStyle`${normalize}`
+export default NormalizeStyle

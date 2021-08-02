@@ -3,10 +3,11 @@ import PropTypes from "prop-types"
 import styled, { css } from "styled-components"
 
 export const TextSizes = {
+  EXTRA_EXTRA_SMALL: "14px",
   EXTRA_SMALL: "17px",
   SMALL: "20px",
   NORMAL: "22px",
-  LARGE: "25px",
+  LARGE: "24px",
   EXTRA_LARGE: "27px",
 }
 
@@ -20,8 +21,8 @@ const TextContainer = styled.p`
   ${props =>
     css`
       font-size: ${props.size};
-      line-height: ${props.height};
-      font-weight: ${props.size};
+      line-height: ${props.size};
+      font-weight: ${props.weight};
     `}
 `
 

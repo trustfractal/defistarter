@@ -1,14 +1,15 @@
-import { css, createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from "styled-components"
 
-import { reset } from "./ResetStyle"
-import { normalize } from "./NormalizeStyle"
+import ResetStyle from "./ResetStyle"
+import NormalizeStyle from "./NormalizeStyle"
 
-export const global = css`
-  ${reset}
-  ${normalize}
+export const GlobalStyle = createGlobalStyle`
+  ${ResetStyle}
+  ${NormalizeStyle}
   :root {
     --c-white: #ffffff;
     --c-black: #000000;
+    --c-light-pink: rgba(209, 151, 255, 0.74);
     --c-pink: #d197ff;
     --c-dark-pink: #cc8bff;
   }
@@ -20,11 +21,10 @@ export const global = css`
 
   html,
   body {
-    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: Nexa, Roboto, -apple-system, BlinkMacSystemFont, Segoe UI,
+      Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+      sans-serif;
   }
 `
 
-const Global = createGlobalStyle`${global}`
-
-export default Global
+export default GlobalStyle

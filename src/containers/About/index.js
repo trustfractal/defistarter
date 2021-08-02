@@ -2,7 +2,7 @@ import * as React from "react"
 import styled from "styled-components"
 
 import Subtitle from "../../components/Subtitle"
-import Text, { TextSizes } from "../../components/Text"
+import Text, { TextSizes, TextWeights } from "../../components/Text"
 import Button from "../../components/Button"
 
 const AboutContainer = styled.div``
@@ -17,7 +17,9 @@ export default function About() {
         promising projects from their earliest stages
       </Text>
       <Button>
-        <Text size={TextSizes.EXTRA_SMALL}>Learn more</Text>
+        <Text size={TextSizes.SMALL} weight={TextWeights.BOLD}>
+          Learn more
+        </Text>
       </Button>
     </AboutContainer>
   )
