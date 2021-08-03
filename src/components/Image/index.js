@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import styled, { css } from "styled-components"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const RootContainer = styled.div`
@@ -27,8 +27,34 @@ Image.defaultProps = {
   clickable: false,
 }
 
-function Image(props) {
-  const { data, name, clickable, onClick } = props
+export default function Image(props) {
+  const { name, clickable, onClick } = props
+
+  const data = useStaticQuery(
+    graphql`
+      query {
+        blockchain_industry: file(
+          relativePath: { eq: "blockchain_industry.png" }
+        ) {
+          childImageSharp {
+            gatsbyImageData(width: 400)
+          }
+        }
+        crypto_today: file(relativePath: { eq: "crypto_today.png" }) {
+          childImageSharp {
+            gatsbyImageData(width: 400)
+          }
+        }
+        exploring_blockchain: file(
+          relativePath: { eq: "exploring_blockchain.png" }
+        ) {
+          childImageSharp {
+            gatsbyImageData(width: 400)
+          }
+        }
+      }
+    `
+  )
 
   const image = getImage(data[name])
 
@@ -38,34 +64,3 @@ function Image(props) {
     </RootContainer>
   )
 }
-
-export default function QueryImage(props) {
-  return (
-    <StaticQuery
-      query={imagesQuery}
-      render={data => <Image {...props} data={data} />}
-    />
-  )
-}
-
-const imagesQuery = graphql`
-  query {
-    blockchain_industry: file(relativePath: { eq: "blockchain_industry.png" }) {
-      childImageSharp {
-        gatsbyImageData(width: 400)
-      }
-    }
-    crypto_today: file(relativePath: { eq: "crypto_today.png" }) {
-      childImageSharp {
-        gatsbyImageData(width: 400)
-      }
-    }
-    exploring_blockchain: file(
-      relativePath: { eq: "exploring_blockchain.png" }
-    ) {
-      childImageSharp {
-        gatsbyImageData(width: 400)
-      }
-    }
-  }
-`

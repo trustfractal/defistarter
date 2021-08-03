@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect, createContext } from "react"
+import { useStaticQuery, graphql } from "gatsby"
+import { getSrc } from "gatsby-plugin-image"
 
 export const FractalWalletContext = createContext(null)
 
@@ -42,6 +44,35 @@ export const FractalWalletProvider = ({ children }) => {
   const [available, setAvailable] = useState(false)
   const [version, setVersion] = useState("")
 
+  const {
+    site: {
+      siteMetadata: { title: name, siteUrl: url },
+    },
+    image,
+  } = useStaticQuery(
+    graphql`
+      query {
+        site {
+          siteMetadata {
+            title
+            siteUrl
+          }
+        }
+        image: file(relativePath: { eq: "logo.png" }) {
+          childImageSharp {
+            gatsbyImageData(width: 36, height: 36)
+          }
+        }
+      }
+    `
+  )
+
+  const requester = {
+    name,
+    url,
+    icon: `${url}/${getSrc(image)}`,
+  }
+
   const loadWallet = async () => {
     try {
       // detect provider
@@ -78,6 +109,7 @@ export const FractalWalletProvider = ({ children }) => {
         available,
         version,
         loading,
+        requester,
       }}
     >
       {children}

@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     --c-pink: #d197ff;
     --c-dark-pink: #cc8bff;
     --c-red: rgba(239, 68, 68);
+    --c-orange: rgba(255, 103, 29, 0.8);
   }
 
   html {

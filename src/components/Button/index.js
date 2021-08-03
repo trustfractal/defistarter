@@ -6,6 +6,8 @@ import Text from "../Text"
 import Icon from "../Icon"
 
 const ButtonContainer = styled.button`
+  user-select: none;
+
   background-color: var(--c-dark-pink);
   color: var(--c-white);
 

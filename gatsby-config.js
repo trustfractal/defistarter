@@ -3,7 +3,8 @@ module.exports = {
     title: `Defilstarter`,
     description: `Using Decentralized Finance empower your ideias.`,
     author: `@djcouto`,
-    siteUrl: `https://gatsbyjs.io/`,
+    siteUrl: `http://localhost:8000`,
+    image: "/static/icons/favicon-32x32.png",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

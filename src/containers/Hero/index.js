@@ -46,12 +46,83 @@ const WarningText = styled.div`
   margin-top: 29px;
 `
 
+const Label = styled.div`
+  width: 250px;
+  background-color: var(--c-orange);
+  color: var(--c-white);
+  border-radius: 10px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+`
+
 export default function Hero() {
-  const { available, loading } = useFractalWallet()
+  const { available, loading, requester, provider } = useFractalWallet()
+
+  const [connected, setConnected] = React.useState(false)
 
   const isLoading = loading === true
   const isAvailable = !loading && available
   const isNotAvailable = !loading && !available
+  const isNotConnected = !isNotAvailable && !connected
+
+  const verifyWalletConnection = React.useCallback(async () => {
+    const { registered, locked, setup } = await provider.verifyConnection()
+
+    setConnected(registered && setup && !locked)
+  }, [provider])
+
+  const onClickConnectWallet = () => {
+    provider
+      .setupPlugin()
+      .then(() => {
+        setConnected(true)
+      })
+      .catch(() => {
+        // ignore
+        setConnected(false)
+      })
+    return
+  }
+
+  const onClickCredential = () => {
+    const fields = {}
+
+    const level = "plus+liveness+wallet"
+
+    provider.getVerificationRequest(level, requester, fields)
+  }
+
+  const onClickCredentialPlusCountries = () => {
+    const fields = {
+      identification_document_country: true,
+      residential_address_country: true,
+    }
+
+    const level = "plus+liveness+wallet"
+
+    provider.getVerificationRequest(level, requester, fields)
+  }
+
+  const onClickCredentialPlusCountriesPlusName = () => {
+    const fields = {
+      identification_document_country: true,
+      residential_address_country: true,
+      full_name: true,
+    }
+
+    const level = "plus+liveness+wallet"
+
+    provider.getVerificationRequest(level, requester, fields)
+  }
+
+  React.useEffect(() => {
+    if (available) {
+      verifyWalletConnection()
+    }
+  }, [available, verifyWalletConnection])
 
   return (
     <HeroSection>
@@ -65,16 +136,33 @@ export default function Hero() {
           </TitleContainer>
           <ButtonsContainer>
             <MainButtonContainer>
-              <Button loading={isLoading} disabled={isNotAvailable}>
-                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
-                  Connect your Fractal Wallet
-                </Text>
-              </Button>
+              {!connected && (
+                <Button
+                  loading={isLoading}
+                  disabled={isNotAvailable}
+                  onClick={onClickConnectWallet}
+                >
+                  <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
+                    Connect your Fractal Wallet
+                  </Text>
+                </Button>
+              )}
+              {connected && (
+                <Label>
+                  <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
+                    Fractal Wallet connected
+                  </Text>
+                </Label>
+              )}
             </MainButtonContainer>
             {isAvailable && (
               <>
                 <SecundaryButtonContainer>
-                  <Button alt disabled={isNotAvailable}>
+                  <Button
+                    alt
+                    disabled={isNotConnected}
+                    onClick={onClickCredential}
+                  >
                     <Text
                       size={TextSizes.EXTRA_EXTRA_SMALL}
                       weight={TextWeights.BOLD}
@@ -84,7 +172,11 @@ export default function Hero() {
                   </Button>
                 </SecundaryButtonContainer>
                 <SecundaryButtonContainer>
-                  <Button alt disabled={isNotAvailable}>
+                  <Button
+                    alt
+                    disabled={isNotConnected}
+                    onClick={onClickCredentialPlusCountries}
+                  >
                     <Text
                       size={TextSizes.EXTRA_EXTRA_SMALL}
                       weight={TextWeights.BOLD}
@@ -94,7 +186,11 @@ export default function Hero() {
                   </Button>
                 </SecundaryButtonContainer>
                 <SecundaryButtonContainer>
-                  <Button alt disabled={isNotAvailable}>
+                  <Button
+                    alt
+                    disabled={isNotConnected}
+                    onClick={onClickCredentialPlusCountriesPlusName}
+                  >
                     <Text
                       size={TextSizes.EXTRA_EXTRA_SMALL}
                       weight={TextWeights.BOLD}
@@ -107,8 +203,11 @@ export default function Hero() {
             )}
             {isNotAvailable && (
               <WarningText>
-                <Text size={TextSizes.EXTRA_EXTRA_SMALL}>
-                  Fractal Wallet is not installed. Please install it from{" "}
+                <Text size={TextSizes.EXTRA_SMALL}>
+                  Fractal Wallet is not installed.
+                </Text>
+                <Text size={TextSizes.EXTRA_SMALL}>
+                  Please install it from{" "}
                   <a
                     target="_blank"
                     rel="noreferrer"
