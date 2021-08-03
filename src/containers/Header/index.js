@@ -1,28 +1,71 @@
 import * as React from "react"
 import styled from "styled-components"
 
+import TopComponent from "../../components/TopComponent"
 import Subtitle from "../../components/Subtitle"
 import Text, { TextSizes, TextWeights } from "../../components/Text"
 
-const HeaderContainer = styled.div``
+const HeaderSection = styled.section``
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const LogoContainer = styled.div`
+  flex: 1;
+`
+
+const LinksContainer = styled.div`
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const Link = styled.a`
+  text-decoration: none;
+  color: var(--c-black);
+
+  :hover {
+    color: var(--c-pink);
+  }
+`
 
 export default function Header() {
   return (
-    <HeaderContainer>
-      <Subtitle>Defistarter</Subtitle>
-      <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
-        home
-      </Text>
-      <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
-        products
-      </Text>
-      <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
-        our team
-      </Text>
-      <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
-        contact us
-      </Text>
-    </HeaderContainer>
+    <HeaderSection>
+      <TopComponent>
+        <HeaderContainer>
+          <LogoContainer>
+            <Subtitle>Defistarter</Subtitle>
+          </LogoContainer>
+          <LinksContainer>
+            <Link href="#">
+              <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
+                home
+              </Text>
+            </Link>
+            <Link href="#">
+              <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
+                products
+              </Text>
+            </Link>
+            <Link href="#">
+              <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
+                our team
+              </Text>
+            </Link>
+            <Link href="#">
+              <Text size={TextSizes.LARGE} weight={TextWeights.BOLD}>
+                contact us
+              </Text>
+            </Link>
+          </LinksContainer>
+        </HeaderContainer>
+      </TopComponent>
+    </HeaderSection>
   )
 }
 

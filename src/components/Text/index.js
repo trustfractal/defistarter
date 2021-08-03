@@ -41,6 +41,6 @@ Text.propTypes = {
 }
 
 Text.defaultProps = {
-  size: TextSizes.MEDIUM,
+  size: TextSizes.NORMAL,
   weight: TextWeights.NORMAL,
 }

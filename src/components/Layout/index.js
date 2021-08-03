@@ -14,13 +14,6 @@ const LayoutContainer = styled.div`
   overflow: hidden;
 `
 
-const LayoutContent = styled.div`
-  max-width: 1440px;
-
-  margin: 0 auto;
-  padding: 103px 102px 120px 122px;
-`
-
 export default function Layout(props) {
   const { children } = props
 
@@ -29,9 +22,7 @@ export default function Layout(props) {
       <GlobalStyle />
       <GlobalFonts />
       <Head />
-      <LayoutContainer className="Layout">
-        <LayoutContent className="Layout-content">{children}</LayoutContent>
-      </LayoutContainer>
+      <LayoutContainer className="Layout">{children}</LayoutContainer>
     </>
   )
 }
