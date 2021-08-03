@@ -8,6 +8,8 @@ import Button from "../../components/Button"
 
 import HeroDots from "../../assets/images/hero_dots.svg"
 
+import { useFractalWallet } from "../../hooks/useFractalWallet"
+
 const HeroSection = styled.section``
 const HeroContainer = styled.div`
   margin-bottom: 100px;
@@ -38,7 +40,19 @@ const SecundaryButtonContainer = styled.div`
   margin-bottom: 11px;
 `
 
+const WarningText = styled.div`
+  color: var(--c-red);
+
+  margin-top: 29px;
+`
+
 export default function Hero() {
+  const { available, loading } = useFractalWallet()
+
+  const isLoading = loading === true
+  const isAvailable = !loading && available
+  const isNotAvailable = !loading && !available
+
   return (
     <HeroSection>
       <HeroDotsContainer>
@@ -51,42 +65,61 @@ export default function Hero() {
           </TitleContainer>
           <ButtonsContainer>
             <MainButtonContainer>
-              <Button>
+              <Button loading={isLoading} disabled={isNotAvailable}>
                 <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
                   Connect your Fractal Wallet
                 </Text>
               </Button>
             </MainButtonContainer>
-            <SecundaryButtonContainer>
-              <Button alt>
-                <Text
-                  size={TextSizes.EXTRA_EXTRA_SMALL}
-                  weight={TextWeights.BOLD}
-                >
-                  Credential only
+            {isAvailable && (
+              <>
+                <SecundaryButtonContainer>
+                  <Button alt disabled={isNotAvailable}>
+                    <Text
+                      size={TextSizes.EXTRA_EXTRA_SMALL}
+                      weight={TextWeights.BOLD}
+                    >
+                      Credential only
+                    </Text>
+                  </Button>
+                </SecundaryButtonContainer>
+                <SecundaryButtonContainer>
+                  <Button alt disabled={isNotAvailable}>
+                    <Text
+                      size={TextSizes.EXTRA_EXTRA_SMALL}
+                      weight={TextWeights.BOLD}
+                    >
+                      Credential + Countries
+                    </Text>
+                  </Button>
+                </SecundaryButtonContainer>
+                <SecundaryButtonContainer>
+                  <Button alt disabled={isNotAvailable}>
+                    <Text
+                      size={TextSizes.EXTRA_EXTRA_SMALL}
+                      weight={TextWeights.BOLD}
+                    >
+                      Credential + Countries + Name
+                    </Text>
+                  </Button>
+                </SecundaryButtonContainer>
+              </>
+            )}
+            {isNotAvailable && (
+              <WarningText>
+                <Text size={TextSizes.EXTRA_EXTRA_SMALL}>
+                  Fractal Wallet is not installed. Please install it from{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://chrome.google.com/webstore/detail/fractal-id-wallet/agechnindjilpccclelhlbjphbgnobpf?hl=pt-PT"
+                  >
+                    here
+                  </a>
+                  .
                 </Text>
-              </Button>
-            </SecundaryButtonContainer>
-            <SecundaryButtonContainer>
-              <Button alt>
-                <Text
-                  size={TextSizes.EXTRA_EXTRA_SMALL}
-                  weight={TextWeights.BOLD}
-                >
-                  Credential + Countries
-                </Text>
-              </Button>
-            </SecundaryButtonContainer>
-            <SecundaryButtonContainer>
-              <Button alt>
-                <Text
-                  size={TextSizes.EXTRA_EXTRA_SMALL}
-                  weight={TextWeights.BOLD}
-                >
-                  Credential + Countries + Name
-                </Text>
-              </Button>
-            </SecundaryButtonContainer>
+              </WarningText>
+            )}
           </ButtonsContainer>
         </HeroContainer>
       </TopComponent>

@@ -12,6 +12,7 @@ export const GlobalStyle = createGlobalStyle`
     --c-light-pink: rgba(209, 151, 255, 0.74);
     --c-pink: #d197ff;
     --c-dark-pink: #cc8bff;
+    --c-red: rgba(239, 68, 68);
   }
 
   html {

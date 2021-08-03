@@ -37,7 +37,13 @@ export default function Text(props) {
 }
 
 Text.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    ),
+    PropTypes.element,
+    PropTypes.string,
+  ]),
 }
 
 Text.defaultProps = {

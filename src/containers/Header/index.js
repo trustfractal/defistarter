@@ -33,13 +33,19 @@ const Link = styled.a`
   }
 `
 
+const Logo = styled.div`
+  cursor: pointer;
+`
+
 export default function Header() {
   return (
     <HeaderSection>
       <TopComponent>
         <HeaderContainer>
           <LogoContainer>
-            <Subtitle>Defistarter</Subtitle>
+            <Logo>
+              <Subtitle>Defistarter</Subtitle>
+            </Logo>
           </LogoContainer>
           <LinksContainer>
             <Link href="#">

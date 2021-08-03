@@ -2,6 +2,7 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import styled, { css } from "styled-components"
 
+import Text from "../Text"
 import Icon from "../Icon"
 
 const ButtonContainer = styled.button`
@@ -23,8 +24,13 @@ const ButtonContainer = styled.button`
   transform: scale(1);
 
   :hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+    ${props =>
+      !props.disabled &&
+      !props.loading &&
+      css`
+        opacity: 0.8;
+        transform: scale(1.05);
+      `}
   }
 
   ${props =>
@@ -47,10 +53,17 @@ const ButtonContainer = styled.button`
       height: ${props.height};
     `}
 
-    ${props =>
+  ${props =>
     props.width !== undefined &&
     css`
       width: ${props.width};
+    `}
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.4;
+      background-color: var(--c-red);
     `}
 `
 
@@ -72,7 +85,11 @@ const RightIconContainer = styled.div`
 `
 
 function ButtonContent(props) {
-  const { leftIcon, rightIcon, children } = props
+  const { loading, leftIcon, rightIcon, children } = props
+
+  if (loading) {
+    return <Text>Loading...</Text>
+  }
 
   return (
     <>
@@ -92,7 +109,7 @@ function ButtonContent(props) {
 }
 
 export default function Button(props) {
-  const { href, target, type, alt, ...otherProps } = props
+  const { loading, disabled, href, target, type, alt, ...otherProps } = props
 
   if (href) {
     return (
@@ -100,6 +117,7 @@ export default function Button(props) {
         href={href}
         target={target}
         alt={alt.toString()}
+        disabled={disabled || loading}
         {...otherProps}
       >
         <ButtonContent {...props} />
@@ -108,7 +126,12 @@ export default function Button(props) {
   }
 
   return (
-    <ButtonContainer type={type} alt={alt.toString()} {...otherProps}>
+    <ButtonContainer
+      type={type}
+      alt={alt.toString()}
+      disabled={disabled || loading}
+      {...otherProps}
+    >
       <ButtonContent {...props} />
     </ButtonContainer>
   )
@@ -118,6 +141,8 @@ Button.defaultProps = {
   target: "_blank",
   type: "button",
   alt: false,
+  disabled: false,
+  loading: false,
 }
 
 Button.propTypes = {
@@ -130,4 +155,6 @@ Button.propTypes = {
   href: PropTypes.string,
   target: PropTypes.oneOf(["_blank", "_self", "_parent", "_top"]),
   type: PropTypes.oneOf(["button", "submit", "reset"]),
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 }
