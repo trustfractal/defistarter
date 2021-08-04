@@ -3,7 +3,7 @@ module.exports = {
     title: `Defilstarter`,
     description: `Using Decentralized Finance empower your ideias.`,
     author: `@djcouto`,
-    siteUrl: `http://localhost:8000`,
+    siteUrl: `https://defistarter.netlify.app`,
     image: "/static/icons/favicon-32x32.png",
   },
   plugins: [
