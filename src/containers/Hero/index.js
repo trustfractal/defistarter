@@ -68,13 +68,7 @@ export default function Hero() {
   const isNotAvailable = !loading && !available
   const isNotConnected = !isNotAvailable && !connected
 
-  const verifyWalletConnection = React.useCallback(async () => {
-    const { registered, locked, setup } = await provider.verifyConnection()
-
-    setConnected(registered && setup && !locked)
-  }, [provider])
-
-  const onClickConnectWallet = () => {
+  const onClickConnectWallet = React.useCallback(() => {
     provider
       .setupPlugin()
       .then(() => {
@@ -85,17 +79,24 @@ export default function Hero() {
         setConnected(false)
       })
     return
-  }
+  }, [provider])
 
-  const onClickCredential = () => {
+  const onClickCredential = React.useCallback(() => {
     const fields = {}
 
     const level = "plus+liveness+wallet"
 
-    provider.getVerificationRequest(level, requester, fields)
-  }
+    provider
+      .getVerificationRequest(level, requester, fields)
+      .then(request => {
+        console.log(request)
+      })
+      .catch(() => {
+        // ignore
+      })
+  }, [provider, requester])
 
-  const onClickCredentialPlusCountries = () => {
+  const onClickCredentialPlusCountries = React.useCallback(() => {
     const fields = {
       identification_document_country: true,
       residential_address_country: true,
@@ -103,10 +104,17 @@ export default function Hero() {
 
     const level = "plus+liveness+wallet"
 
-    provider.getVerificationRequest(level, requester, fields)
-  }
+    provider
+      .getVerificationRequest(level, requester, fields)
+      .then(request => {
+        console.log(request)
+      })
+      .catch(() => {
+        // ignore
+      })
+  }, [provider, requester])
 
-  const onClickCredentialPlusCountriesPlusName = () => {
+  const onClickCredentialPlusCountriesPlusName = React.useCallback(() => {
     const fields = {
       identification_document_country: true,
       residential_address_country: true,
@@ -115,8 +123,23 @@ export default function Hero() {
 
     const level = "plus+liveness+wallet"
 
-    provider.getVerificationRequest(level, requester, fields)
-  }
+    provider
+      .getVerificationRequest(level, requester, fields)
+      .then(request => {
+        console.log(request)
+      })
+      .catch(() => {
+        // ignore
+      })
+  }, [provider, requester])
+
+  const verifyWalletConnection = React.useCallback(async () => {
+    const { registered, locked, setup } = await provider.verifyConnection()
+
+    setConnected(registered && setup && !locked)
+
+    onClickConnectWallet()
+  }, [provider, onClickConnectWallet])
 
   React.useEffect(() => {
     if (available) {
