@@ -1,9 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: `Defilstarter`,
+    title: `Defistarter | Cross-chain crowdfunding platform`,
     description: `Using Decentralized Finance empower your ideias.`,
     author: `@djcouto`,
-    siteUrl: `https://defistarter.netlify.app`,
+    siteUrl: `https://web3.fractal.id`,
     image: "/static/icons/favicon-32x32.png",
   },
   plugins: [
