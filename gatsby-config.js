@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Defistarter - Cross-chain crowdfunding platform`,
+    title: `Defistarter`,
     description: `Using Decentralized Finance to boost your ideias.`,
     author: `@djcouto`,
     siteUrl: `https://web3.fractal.id`,
