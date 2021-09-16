@@ -58,16 +58,42 @@ const Label = styled.div`
   user-select: none;
 `
 
+const Credential = styled.div`
+  background-color: var(--c-lightest-pink);
+  border: 1px solid var(--c-light-pink);
+  border-radius: 5px;
+  padding: 18px 14px;
+  box-shadow: 0px 3px 3px #d197ff;
+  width: 250px;
+`
+
+const CredentialEntry = styled.div`
+  margin-bottom: 12px;
+`
+
+const CredentialEntryLabel = styled.div`
+  color: var(--c-dark-pink);
+  margin-bottom: 4px;
+`
+const CredentialEntryValue = styled.div`
+  color: var(--c-black);
+`
+
+const formatLabel = label => label.split("_").join(" ").toLowerCase()
+
 export default function Hero() {
   const { available, loading, requester, provider } = useFractalWallet()
 
   const [connected, setConnected] = React.useState(false)
   const [credentialNotFound, setCredentialNotFound] = React.useState(false)
+  const [credentialDenied, setCredentialDenied] = React.useState(false)
+  const [credential, setCredential] = React.useState()
 
   const isLoading = loading === true
   const isAvailable = !loading && available
   const isNotAvailable = !loading && !available
   const isNotConnected = !isNotAvailable && !connected
+  const hasCredential = credential !== undefined
 
   const onClickConnectWallet = React.useCallback(() => {
     provider
@@ -83,19 +109,30 @@ export default function Hero() {
   }, [provider])
 
   const onClickCredential = React.useCallback(() => {
+    // reset errors
+    setCredentialNotFound(false)
+    setCredentialDenied(false)
+
     const fields = {}
 
     const level = "plus+liveness+wallet"
 
     provider
       .getVerificationRequest(level, requester, fields)
-      .then(request => {
-        console.log(request)
+      .then(({ credential }) => {
+        setCredential({
+          ...credential.properties,
+          country_of_issuance: credential.countryOfIDIssuance,
+          country_of_residence: credential.countryOfResidence,
+        })
       })
       .catch(({ errorCode }) => {
         // ignore
         if (errorCode === 5004) {
           setCredentialNotFound(true)
+        }
+        if (errorCode === 5002) {
+          setCredentialDenied(true)
         }
       })
   }, [provider, requester])
@@ -110,18 +147,27 @@ export default function Hero() {
 
     provider
       .getVerificationRequest(level, requester, fields)
-      .then(request => {
-        console.log(request)
+      .then(({ credential }) => {
+        setCredential({
+          ...credential.properties,
+        })
       })
       .catch(({ errorCode }) => {
         // ignore
         if (errorCode === 5004) {
           setCredentialNotFound(true)
         }
+        if (errorCode === 5002) {
+          setCredentialDenied(true)
+        }
       })
   }, [provider, requester])
 
   const onClickCredentialPlusCountriesPlusName = React.useCallback(() => {
+    // reset errors
+    setCredentialNotFound(false)
+    setCredentialDenied(false)
+
     const fields = {
       identification_document_country: true,
       residential_address_country: true,
@@ -132,13 +178,18 @@ export default function Hero() {
 
     provider
       .getVerificationRequest(level, requester, fields)
-      .then(request => {
-        console.log(request)
+      .then(({ credential }) => {
+        setCredential({
+          ...credential.properties,
+        })
       })
       .catch(({ errorCode }) => {
         // ignore
         if (errorCode === 5004) {
           setCredentialNotFound(true)
+        }
+        if (errorCode === 5002) {
+          setCredentialDenied(true)
         }
       })
   }, [provider, requester])
@@ -188,7 +239,25 @@ export default function Hero() {
                 </Label>
               )}
             </MainButtonContainer>
-            {isAvailable && (
+            {hasCredential && (
+              <Credential>
+                {Object.keys(credential).map(key => (
+                  <CredentialEntry key={key}>
+                    <CredentialEntryLabel>
+                      <Text size={TextSizes.EXTRA_EXTRA_SMALL}>
+                        {formatLabel(key)}
+                      </Text>
+                    </CredentialEntryLabel>
+                    <CredentialEntryValue>
+                      <Text size={TextSizes.EXTRA_SMALL}>
+                        {credential[key]}
+                      </Text>
+                    </CredentialEntryValue>
+                  </CredentialEntry>
+                ))}
+              </Credential>
+            )}
+            {!hasCredential && isAvailable && (
               <>
                 <SecundaryButtonContainer>
                   <Button
@@ -249,6 +318,13 @@ export default function Hero() {
                     here
                   </a>
                   .
+                </Text>
+              </WarningText>
+            )}
+            {credentialDenied && (
+              <WarningText>
+                <Text size={TextSizes.EXTRA_SMALL}>
+                  Request for credential denied
                 </Text>
               </WarningText>
             )}

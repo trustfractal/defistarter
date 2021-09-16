@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   :root {
     --c-white: #ffffff;
     --c-black: #000000;
+    --c-lightest-pink: rgba(209, 151, 255, 0.1);
     --c-light-pink: rgba(209, 151, 255, 0.74);
     --c-pink: #d197ff;
     --c-dark-pink: #cc8bff;
