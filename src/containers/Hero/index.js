@@ -257,7 +257,25 @@ export default function Hero() {
                 ))}
               </Credential>
             )}
-            {!hasCredential && isAvailable && (
+            {credentialNotFound && (
+              <WarningText>
+                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
+                  You don't have a credential `plus+liveness+wallet` yet.
+                </Text>
+                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
+                  Go to get one from{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://fractal.id/authorize?client_id=ImCQ0UXUjRzkhG7nMSZZNV-5WA3J_CuGENBfhr8DmEE&redirect_uri=https%3A%2F%2Ffractal.id%2F&response_type=code&scope=contact%3Aread%20verification.plus%3Aread%20verification.plus.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.wallet%3Aread%20verification.wallet.details%3Aread"
+                  >
+                    Fractal ID
+                  </a>
+                  .
+                </Text>
+              </WarningText>
+            )}
+            {!credentialNotFound && !hasCredential && isAvailable && (
               <>
                 <SecundaryButtonContainer>
                   <Button
@@ -305,10 +323,10 @@ export default function Hero() {
             )}
             {isNotAvailable && (
               <WarningText>
-                <Text size={TextSizes.EXTRA_SMALL}>
+                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
                   Fractal Wallet is not installed.
                 </Text>
-                <Text size={TextSizes.EXTRA_SMALL}>
+                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
                   Please install it from{" "}
                   <a
                     target="_blank"
@@ -323,26 +341,8 @@ export default function Hero() {
             )}
             {credentialDenied && (
               <WarningText>
-                <Text size={TextSizes.EXTRA_SMALL}>
+                <Text size={TextSizes.EXTRA_SMALL} weight={TextWeights.BOLD}>
                   Request for credential denied
-                </Text>
-              </WarningText>
-            )}
-            {credentialNotFound && (
-              <WarningText>
-                <Text size={TextSizes.EXTRA_SMALL}>
-                  You don't have a credential `plus+liveness+wallet` yet.
-                </Text>
-                <Text size={TextSizes.EXTRA_SMALL}>
-                  Go to get one from{" "}
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://fractal.id/authorize?client_id=ImCQ0UXUjRzkhG7nMSZZNV-5WA3J_CuGENBfhr8DmEE&redirect_uri=https%3A%2F%2Ffractal.id%2F&response_type=code&scope=contact%3Aread%20verification.plus%3Aread%20verification.plus.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.wallet%3Aread%20verification.wallet.details%3Aread"
-                  >
-                    Fractal ID
-                  </a>
-                  .
                 </Text>
               </WarningText>
             )}
