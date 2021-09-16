@@ -62,6 +62,7 @@ export default function Hero() {
   const { available, loading, requester, provider } = useFractalWallet()
 
   const [connected, setConnected] = React.useState(false)
+  const [credentialNotFound, setCredentialNotFound] = React.useState(false)
 
   const isLoading = loading === true
   const isAvailable = !loading && available
@@ -91,8 +92,11 @@ export default function Hero() {
       .then(request => {
         console.log(request)
       })
-      .catch(() => {
+      .catch(({ errorCode }) => {
         // ignore
+        if (errorCode === 5004) {
+          setCredentialNotFound(true)
+        }
       })
   }, [provider, requester])
 
@@ -109,8 +113,11 @@ export default function Hero() {
       .then(request => {
         console.log(request)
       })
-      .catch(() => {
+      .catch(({ errorCode }) => {
         // ignore
+        if (errorCode === 5004) {
+          setCredentialNotFound(true)
+        }
       })
   }, [provider, requester])
 
@@ -128,8 +135,11 @@ export default function Hero() {
       .then(request => {
         console.log(request)
       })
-      .catch(() => {
+      .catch(({ errorCode }) => {
         // ignore
+        if (errorCode === 5004) {
+          setCredentialNotFound(true)
+        }
       })
   }, [provider, requester])
 
@@ -183,7 +193,7 @@ export default function Hero() {
                 <SecundaryButtonContainer>
                   <Button
                     alt
-                    disabled={isNotConnected}
+                    disabled={isNotConnected || credentialNotFound}
                     onClick={onClickCredential}
                   >
                     <Text
@@ -197,7 +207,7 @@ export default function Hero() {
                 <SecundaryButtonContainer>
                   <Button
                     alt
-                    disabled={isNotConnected}
+                    disabled={isNotConnected || credentialNotFound}
                     onClick={onClickCredentialPlusCountries}
                   >
                     <Text
@@ -211,7 +221,7 @@ export default function Hero() {
                 <SecundaryButtonContainer>
                   <Button
                     alt
-                    disabled={isNotConnected}
+                    disabled={isNotConnected || credentialNotFound}
                     onClick={onClickCredentialPlusCountriesPlusName}
                   >
                     <Text
@@ -237,6 +247,24 @@ export default function Hero() {
                     href="https://chrome.google.com/webstore/detail/fractal-id-wallet/agechnindjilpccclelhlbjphbgnobpf?hl=pt-PT"
                   >
                     here
+                  </a>
+                  .
+                </Text>
+              </WarningText>
+            )}
+            {credentialNotFound && (
+              <WarningText>
+                <Text size={TextSizes.EXTRA_SMALL}>
+                  You don't have a credential `plus+liveness+wallet` yet.
+                </Text>
+                <Text size={TextSizes.EXTRA_SMALL}>
+                  Go to get one from{" "}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://fractal.id/authorize?client_id=ImCQ0UXUjRzkhG7nMSZZNV-5WA3J_CuGENBfhr8DmEE&redirect_uri=https%3A%2F%2Ffractal.id%2F&response_type=code&scope=contact%3Aread%20verification.plus%3Aread%20verification.plus.details%3Aread%20verification.liveness%3Aread%20verification.liveness.details%3Aread%20verification.wallet%3Aread%20verification.wallet.details%3Aread"
+                  >
+                    Fractal ID
                   </a>
                   .
                 </Text>
